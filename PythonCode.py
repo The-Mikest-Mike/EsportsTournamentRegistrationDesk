@@ -1,84 +1,68 @@
-# Code organized into Methods/Functions/Classes/Modules
-from rich.console import Console
+# constants
+WELCOME_MESSAGE = "WELCOME TO <THE ESPORT TOURNAMENT>!"
+QUIT_MESSAGE = "\tPress 'Q' at any point to QUIT and repeat registration process"
+INVALID_INPUT_MESSAGE = "Invalid input! Please enter LETTERS ONLY WITHOUT SPACES."
+MAX_REGISTRATIONS = 3
 
-# welcome message
-console = Console()
-console.print("WELCOME TO SUPER SMASHTER SERIES!", style="bold")
-console.print("\tPress 'Q' at any point to QUIT and repeat registration process", style="italic")
-input("\t\t\tPress ENTER to continue. . .")
+# class
+class Player:
+    def __init__(self, name, gamertag):
+        self.name = name
+        self.gamertag = gamertag
 
-#Variables (List here all the variables)
+class Tournament:
+    def __init__(self):
+        self.registrations = []
 
+    def welcome(self):
+        print(WELCOME_MESSAGE)
+        print(QUIT_MESSAGE)
+        input("\t\t\tPress ENTER to continue. . .")
 
-# registration process
-reg = []  # Create an empty list to store registration of the users
+    def get_name(self):
+        while True:
+            name = input("Enter your NAME: ").upper()
 
-while True:  # Initiates an infinite loop for the registration process  until explicitly exited
-    # get user input for name
-    name = input("Enter your NAME: ").upper()  # Changes all inputs to CAPITALS
+            if name.lower() == 'q':
+                print("Returning to the beginning of the registration process...")
+                continue
 
-    if name.lower() == 'q':
-        print("Returning to the beginning of the registration process...")
-        continue  # Restart registration process from the beginning.Previous entries are preserved
+            if not name.isalpha():
+                print(INVALID_INPUT_MESSAGE)
+                continue
 
-    if not name.isalpha():
-        print("Invalid input! Please enter LETTERS ONLY WITHOUT SPACES.")
-        continue  # Skip the current iteration and prompt for a new name.Previous entries are preserved
+            return name
 
-    # get user input for gamer tag
-    gamertag = input("Enter your GAMER TAG: ")
+    def get_gamertag(self):
+        while True:
+            gamertag = input("Enter your GAMER TAG: ")
 
-    if gamertag.lower() == 'q':
-        print("Returning to the beginning of the registration process...")
-        continue  # Restart the registration process from the beginning. Previous entries are preserved
+            if gamertag.lower() == 'q':
+                print("Returning to the beginning of the registration process...")
+                continue
 
+            return gamertag
 
-    #Here I am trying to set the condition that whenever both variables "gamertag" and "name" are filled, print that message
-    while gamertag==True:
-        message = f"YOU ARE NOW REGISTERED! GOOD LUCK!"
-        print(message)
+    def register_players(self):
+        while len(self.registrations) < MAX_REGISTRATIONS:
+            name = self.get_name()
+            gamertag = self.get_gamertag()
+            player = Player(name, gamertag)
+            self.registrations.append(player)
 
-    # store registration details in a dictionary
-    registration = {'name': name, 'gamertag': gamertag}  # Create a dictionary to store the registration details
-    reg.append(registration)  # Add the registration to the list of registration
+    def display_registration(self):
+        print("Registration Process Completed!")
+        print("Registered Names and Gamer Tags:")
 
-    # Check if registration process is complete based on length condition
-    if len(reg) >= 2:
-        break  # Exit the registration process if the condition is met
+        for player in self.registrations:
+            print(f"Name: {player.name}")
+            print(f"Gamer Tag: {player.gamertag}\n")
 
-    input("Press ENTER to continue...")
+def main():
+    tournament = Tournament()
+    tournament.welcome()
+    tournament.register_players()
+    tournament.display_registration()
 
-# displays registration results
-print("Registration Process Completed!")
-print("Registered Names and Gamer Tags:")
-
-for registration in reg:
-    console.print("Name:", registration['name'], style="bold")
-    console.print("Gamer Tag:", registration['gamertag'], style="bold")
-    print()
-
-# edit registration
-# Initializes the 'edit' variable with the none value until finding a match
-edit = None  # When matching registration, the 'edit' variable is updated with the registration dictionary
-# Find the desired registration
-for entry in reg:  # variable "entry" auto created as part of the loop's iteration process
-    if entry['name'] == 'WRONGN' or entry['gamertag'] == 'WRONGGT':
-        edit = entry
-        break
-
-if edit is not None:
-    # Perform the necessary edits on the registration dictionary
-    if edit['name'] == 'WRONGN':
-        edit['name'] = 'New Name'
-    if edit['gamertag'] == 'WRONGGT':
-        edit['gamertag'] = 'New Gamer Tag'
-    print("Registration updated successfully!")
-else:
-    print("Registration not found.")
-
-
-#Sort the registration list alphabetized without affecting the existing list
-sorted_list = sorted(registration)
-print(sorted_list)
-
-# Code to validate whether the 'name' or 'gamertag' already exists to avoid duplicate registrations
+if __name__ == "__main__":
+    main()
