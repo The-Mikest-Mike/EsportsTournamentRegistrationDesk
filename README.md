@@ -3,7 +3,7 @@
 Welcome to the Esport Tournament Registration program! This Python console application allows users to register for an esport tournament with ease.
 
 ## Features
-
+ 
 - User-friendly registration process.
 - Customizable welcome message.
 - Easy-to-follow instructions for registration.
